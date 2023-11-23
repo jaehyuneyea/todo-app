@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "todo-list-test-app-b7446": {
+      "hosting": {
+        "todo-list": [
+          "todo-list-test-app-b7446"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "todo-list-test-app-b7446"
+  }
+}
