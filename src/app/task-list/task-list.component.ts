@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Firestore, query, collection, collectionData, orderBy } from '@angular/fire/firestore';
 
 import {Task} from './task';
 import { Observable } from 'rxjs';
@@ -15,7 +15,10 @@ export class TaskListComponent {
   tasks$: Observable<Task[]>;
 
   constructor() {
-    const taskCollection = collection(this.firestore, 'tasks');
-    this.tasks$ = collectionData(taskCollection) as Observable<Task[]>;
+    const ref = query(
+      collection(this.firestore,'tasks'),
+      orderBy("createdAt")
+    );
+    this.tasks$ = collectionData(ref) as Observable<Task[]>;
   }
 }
