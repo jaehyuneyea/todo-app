@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 
 import {Task} from './task';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-task-list',
@@ -8,10 +10,12 @@ import {Task} from './task';
   styleUrls: ['./task-list.component.css']
 })
 export class TaskListComponent {
+  private firestore: Firestore = inject(Firestore);
   rando = Math.random();
-  tasks: Task[];
+  tasks$: Observable<Task[]>;
 
   constructor() {
-    this.tasks = [new Task("this is my first task", false), new Task("this is my second task", false)];
+    const taskCollection = collection(this.firestore, 'tasks');
+    this.tasks$ = collectionData(taskCollection) as Observable<Task[]>;
   }
 }
