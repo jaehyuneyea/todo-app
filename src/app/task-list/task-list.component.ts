@@ -1,9 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { Firestore, query, collection, collectionData, orderBy, addDoc, CollectionReference } from '@angular/fire/firestore';
+import { Firestore, query, collection, collectionData, orderBy, addDoc, CollectionReference, serverTimestamp } from '@angular/fire/firestore';
 import { NgForm }from '@angular/forms'
 import {v4 as uuidv4} from 'uuid'
-import firebase from 'firebase/compat/app'
-import 'firebase/compat/firestore'
 
 import { Task } from './task';
 import { Observable } from 'rxjs';
@@ -19,7 +17,7 @@ export class TaskListComponent {
   taskCollection: CollectionReference;
 
   addTask(taskForm: NgForm) {
-    const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+    const timestamp = serverTimestamp();
     let task = new Task(timestamp, uuidv4(), taskForm.value.description, false);
     let temp = Object.assign({}, task);
 
