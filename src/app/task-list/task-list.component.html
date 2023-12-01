@@ -1,6 +1,6 @@
 <div class="card card mt-5">
-    <div class="card-header text-center">
-        <h1 class="display-6 fw-bold">TODO LIST</h1>
+    <div class="card-header text-center border-0">
+        <h1 class="display-6 fw-bold">Todo List</h1>
     </div>
     <div class="card-body p-4">
         <form #taskForm="ngForm" (ngSubmit)="addTask(taskForm)">
@@ -12,13 +12,16 @@
             </div>
         </form>
     </div>
-    <div class="card">
+    <div class="card border-0">
         <ul class="list-group list-group-flush">
             <li class="list-group-item" *ngFor="let task of tasks$ | async">
                 <button class="btn" (click)="updateTask(task.id, task.isDone)">
                     <i [ngClass]="task.isDone?'fa-solid fa-square-check' : 'fa-regular fa-square-check'"></i>
                 </button>
                 {{task.description}}
+                <button class="btn float-end text-secondary" (click)="deleteTask(task.id)">
+                    <i class="fa-solid fa-x"></i>
+                </button>
             </li>
         </ul>
     </div>

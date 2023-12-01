@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Firestore, query, collection, collectionData, orderBy, addDoc, CollectionReference, serverTimestamp, updateDoc } from '@angular/fire/firestore';
-import { doc, getDoc } from "firebase/firestore"
+import { Firestore, query, collection, collectionData, orderBy, addDoc, CollectionReference, serverTimestamp, updateDoc, deleteDoc, doc } from '@angular/fire/firestore';
 import { NgForm }from '@angular/forms'
 
 import { Task } from './task';
@@ -18,22 +17,26 @@ export class TaskListComponent {
 
   addTask(taskForm: NgForm) {
     const timestamp = serverTimestamp();
-    let task =  {
+    let task = {
       createdAt: timestamp, 
       description: taskForm.value.description, 
       isDone: false
     };
-
     addDoc(this.taskCollection, task);
     taskForm.resetForm();
   }
 
   async updateTask(id: string, isDone: boolean) {
     const ref = doc(this.firestore, 'tasks', id);
-    const newData = {
+    const updatedData = {
       isDone: !isDone
     }
-    updateDoc(ref, newData);
+    updateDoc(ref, updatedData);
+  }
+
+  deleteTask(id: string) {
+    const ref = doc(this.firestore, 'tasks', id);
+    deleteDoc(ref);
   }
 
   constructor() {
@@ -44,5 +47,4 @@ export class TaskListComponent {
     );
     this.tasks$ = collectionData(ref, { idField: 'id' }) as Observable<Task[]>;
   }
-
 }
