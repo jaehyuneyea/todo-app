@@ -1,10 +1,29 @@
-<p>task-list works!</p>
-<form #taskForm="ngForm" (ngSubmit)="addTask(taskForm)">
-    <input name="description" ngModel required #description="ngModel">
-    <button>submit</button>
-</form>
-<ul>
-    <li *ngFor="let task of tasks$ | async">
-        {{task.description}}
-    </li>
-</ul>
+<div class="card card mt-5">
+    <div class="card-header text-center">
+        <h1 class="display-6 fw-bold">TODO LIST</h1>
+    </div>
+    <div class="card-body p-4">
+        <form #taskForm="ngForm" (ngSubmit)="addTask(taskForm)">
+            <div class="input-group">
+                <input class="form-control" name="description" ngModel required #description="ngModel" placeholder="enter task here">
+                <button class="btn">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="card">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let task of tasks$ | async">
+                <button class="btn" (click)="updateTask(task.id, task.isDone)">
+                    <i [ngClass]="task.isDone?'fa-solid fa-square-check' : 'fa-regular fa-square-check'"></i>
+                </button>
+                {{task.description}}
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+

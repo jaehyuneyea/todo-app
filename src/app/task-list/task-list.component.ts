@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { Firestore, query, collection, collectionData, orderBy, addDoc, CollectionReference, serverTimestamp } from '@angular/fire/firestore';
+import { Firestore, query, collection, collectionData, orderBy, addDoc, CollectionReference, serverTimestamp, updateDoc } from '@angular/fire/firestore';
+import { doc, getDoc } from "firebase/firestore"
 import { NgForm }from '@angular/forms'
-import {v4 as uuidv4} from 'uuid'
 
 import { Task } from './task';
 import { Observable } from 'rxjs';
@@ -18,19 +18,31 @@ export class TaskListComponent {
 
   addTask(taskForm: NgForm) {
     const timestamp = serverTimestamp();
-    let task = new Task(timestamp, uuidv4(), taskForm.value.description, false);
-    let temp = Object.assign({}, task);
+    let task =  {
+      createdAt: timestamp, 
+      description: taskForm.value.description, 
+      isDone: false
+    };
 
-    addDoc(this.taskCollection, <Task> temp);
+    addDoc(this.taskCollection, task);
+    taskForm.resetForm();
+  }
+
+  async updateTask(id: string, isDone: boolean) {
+    const ref = doc(this.firestore, 'tasks', id);
+    const newData = {
+      isDone: !isDone
+    }
+    updateDoc(ref, newData);
   }
 
   constructor() {
-    this.taskCollection = collection(this.firestore, 'tasks');
+    this.taskCollection = collection(this.firestore, 'tasks'), { idField: 'id'};
     const ref = query(
       this.taskCollection,
       orderBy("createdAt")
     );
-    this.tasks$ = collectionData(ref) as Observable<Task[]>;
+    this.tasks$ = collectionData(ref, { idField: 'id' }) as Observable<Task[]>;
   }
 
 }
