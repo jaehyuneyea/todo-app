@@ -15,9 +15,9 @@
         </div>
         <div class="card border-0">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item" *ngFor="let task of tasks$ | async">
+                <li class="list-group-item fs-5" *ngFor="let task of tasks$ | async">
                     <button class="btn" (click)="updateTask(task.id, task.isDone)">
-                        <i [ngClass]="task.isDone?'fa-solid fa-square-check' : 'fa-regular fa-square-check'"></i>
+                        <i [ngClass]="task.isDone?'fa-solid fa-square-check fa-xl' : 'fa-regular fa-square-check fa-xl'"></i>
                     </button>
                     {{task.description}}
                     <button class="btn float-end text-secondary" (click)="deleteTask(task.id)">
